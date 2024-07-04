@@ -1,0 +1,258 @@
+{
+  "info": {
+    "name": "Stock Exchange API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Stock Exchange",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"BIST\",\n  \"description\": \"Borsa Istanbul\",\n  \"liveInMarket\": false\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock-exchange",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock-exchange"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Stock Exchange by Name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock-exchange/BIST",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock-exchange",
+            "BIST"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Stock",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"AKBNK\",\n  \"description\": \"Akbank\",\n  \"currentPrice\": 7.45,\n  \"lastUpdate\": \"2024-07-03T00:00:00.000+00:00\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Add Stock to Stock Exchange by ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock-exchange/BIST/add-stock-by-id/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock-exchange",
+            "BIST",
+            "add-stock-by-id",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Add Stock to Stock Exchange by Name",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock-exchange/BIST/add-stock-by-name/AKBNK",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock-exchange",
+            "BIST",
+            "add-stock-by-name",
+            "AKBNK"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Remove Stock from Stock Exchange by ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock-exchange/BIST/remove-stock-by-id/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock-exchange",
+            "BIST",
+            "remove-stock-by-id",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Remove Stock from Stock Exchange by Name",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock-exchange/BIST/remove-stock-by-name/AKBNK",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock-exchange",
+            "BIST",
+            "remove-stock-by-name",
+            "AKBNK"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update Stock Price",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"newPrice\": 7.50\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock/1/update-price",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock",
+            "1",
+            "update-price"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Stock",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/stock/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "stock",
+            "1"
+          ]
+        }
+      }
+    }
+  ]
+}
