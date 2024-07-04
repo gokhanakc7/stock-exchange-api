@@ -66,6 +66,12 @@ JaCoCo is used for code coverage analysis. Run the following command to generate
 ```sh
 ./gradlew clean test jacocoTestReport
 
-Current coverage report is shown below
-![Screenshot 2024-07-05 at 01 10 45](https://github.com/gokhanakc7/stock-exchange-api/assets/162465880/4417ba4c-f056-42b1-8284-3ce15d51a425)
+Current coverage report is shown belowElement	Missed Instructions	Cov.	Missed Branches	Cov.	Missed	Cxty	Missed	Lines	Missed	Methods	Missed	Classes
+com.stockexchange.api.exception	38%		n/a		2	5	11	19	2	5	0	2
+com.stockexchange.api.service	91%	80%	10	36	6	90	4	21	0	1		
+com.stockexchange.api.config	23%		n/a		1	3	7	9	1	3	0	2
+com.stockexchange.api.controller	96%	50%	1	11	1	44	0	10	0	1		
+com.stockexchange.api	37%		n/a		1	2	2	3	1	2	0	1
+com.stockexchange.api.model	100%	n/a	0	24	0	35	0	24	0	2		
+Total	84%	78%	7 of 32		15	81	27	200	8	65	0	9
 
