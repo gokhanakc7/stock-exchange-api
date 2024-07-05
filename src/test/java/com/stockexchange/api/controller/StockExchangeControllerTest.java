@@ -1,7 +1,6 @@
 package com.stockexchange.api.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -13,7 +12,9 @@ import com.stockexchange.api.model.Stock;
 import com.stockexchange.api.model.StockExchange;
 import com.stockexchange.api.service.StockExchangeService;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -456,5 +457,88 @@ public class StockExchangeControllerTest {
         .andExpect(content().string("Invalid stock name"));
 
     verify(stockExchangeService, times(1)).removeStockFromExchangeByName("BIST", "INVALID");
+  }
+
+  @Test
+  public void testCreateStockExchangeWithFewerThan5Stocks() throws Exception {
+    StockExchange exchange = new StockExchange();
+    exchange.setName("BIST");
+    exchange.setLiveInMarket(true);
+    exchange.setListedStocks(new HashSet<>());
+
+    when(stockExchangeService.createStockExchange(any()))
+        .thenThrow(
+            new IllegalArgumentException(
+                "A stock exchange cannot be live in the market with fewer than 5 stocks."));
+
+    mockMvc
+        .perform(
+            post("/api/v1/stock-exchange")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(exchange)))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string("A stock exchange cannot be live in the market with fewer than 5 stocks."));
+
+    verify(stockExchangeService, times(1)).createStockExchange(any());
+  }
+
+  @Test
+  public void testRemoveStockFromExchangeByIdUpdatesLiveInMarket() throws Exception {
+    StockExchange exchange = new StockExchange();
+    exchange.setName("BIST");
+    exchange.setListedStocks(new HashSet<>(Collections.nCopies(5, new Stock())));
+    exchange.setLiveInMarket(true);
+    Stock stock = new Stock();
+    stock.setId(1L);
+
+    doAnswer(
+            invocation -> {
+              exchange.getListedStocks().remove(stock);
+              if (exchange.getListedStocks().size() < 5) {
+                exchange.setLiveInMarket(false);
+              }
+              return null;
+            })
+        .when(stockExchangeService)
+        .removeStockFromExchangeById("BIST", 1L);
+
+    mockMvc
+        .perform(
+            post("/api/v1/stock-exchange/BIST/remove-stock-by-id/1")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent());
+
+    assertFalse(exchange.isLiveInMarket());
+  }
+
+  @Test
+  public void testRemoveStockFromExchangeByNameUpdatesLiveInMarket() throws Exception {
+    StockExchange exchange = new StockExchange();
+    exchange.setName("BIST");
+    exchange.setListedStocks(new HashSet<>(Collections.nCopies(5, new Stock())));
+    exchange.setLiveInMarket(true);
+    Stock stock = new Stock();
+    stock.setName("AKBNK");
+
+    doAnswer(
+            invocation -> {
+              exchange.getListedStocks().remove(stock);
+              if (exchange.getListedStocks().size() < 5) {
+                exchange.setLiveInMarket(false);
+              }
+              return null;
+            })
+        .when(stockExchangeService)
+        .removeStockFromExchangeByName("BIST", "AKBNK");
+
+    mockMvc
+        .perform(
+            post("/api/v1/stock-exchange/BIST/remove-stock-by-name/AKBNK")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent());
+
+    assertFalse(exchange.isLiveInMarket());
   }
 }
