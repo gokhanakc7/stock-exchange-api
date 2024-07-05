@@ -66,10 +66,13 @@ public class StockExchangeService {
             .findById(stockId)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Stock not found with id: " + stockId));
+
     exchange.getListedStocks().add(stock);
+
     if (exchange.getListedStocks().size() >= 5) {
       exchange.setLiveInMarket(true);
     }
+
     stockExchangeRepository.save(exchange);
   }
 
@@ -86,10 +89,13 @@ public class StockExchangeService {
             .findByName(stockName)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Stock not found with name: " + stockName));
+
     exchange.getListedStocks().add(stock);
+
     if (exchange.getListedStocks().size() >= 5) {
       exchange.setLiveInMarket(true);
     }
+
     stockExchangeRepository.save(exchange);
   }
 
@@ -106,10 +112,13 @@ public class StockExchangeService {
             .findById(stockId)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Stock not found with id: " + stockId));
+
     exchange.getListedStocks().remove(stock);
+
     if (exchange.getListedStocks().size() < 5) {
       exchange.setLiveInMarket(false);
     }
+
     stockExchangeRepository.save(exchange);
   }
 
@@ -126,10 +135,13 @@ public class StockExchangeService {
             .findByName(stockName)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Stock not found with name: " + stockName));
+
     exchange.getListedStocks().remove(stock);
+
     if (exchange.getListedStocks().size() < 5) {
       exchange.setLiveInMarket(false);
     }
+
     stockExchangeRepository.save(exchange);
   }
 
@@ -155,6 +167,9 @@ public class StockExchangeService {
     Set<StockExchange> stockExchanges = stock.getExchangesListedIn();
     for (StockExchange exchange : stockExchanges) {
       exchange.getListedStocks().remove(stock);
+      if (exchange.getListedStocks().size() < 5) {
+        exchange.setLiveInMarket(false);
+      }
       stockExchangeRepository.save(exchange);
     }
 
